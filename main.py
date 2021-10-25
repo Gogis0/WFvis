@@ -1,10 +1,12 @@
-import sys
-import pygame
-import random
 import copy
-import graph_plotter
+import random
+import sys
+
 import numpy as np
+import pygame
 from pygame.locals import *
+
+import graph_plotter
 from constants import *
 
 
@@ -57,7 +59,6 @@ class Population:
         if specimen_list is None:
             for i in range(N):
                 color = random.randint(0, len(color_list) - 1)
-                print(color)
                 self.specimen_list.append(Specimen(color))
         else:
             self.parents_list = []
@@ -88,7 +89,7 @@ class Population:
             s = self.specimen_list[i]
             if s.is_alive:
                 position = (self.margin_size * (i + 1), self.row_height // 2)
-                pygame.draw.circle(self.row, color_list[s.color], position, self.row_height // 8)
+                pygame.draw.circle(self.row, color_list[s.color], position, self.margin_size // 3)
                 # if s.color == 0:
                 #    self.row.blit(self.lightImg, position)
                 # else:
@@ -139,6 +140,11 @@ def main():
 
     absolute_offset = 0
     max_y = 0
+    env_change_flag = False
+
+    # text init
+    pygame.font.init()
+    myfont = pygame.font.SysFont('Inconsolata', 26)
 
     # Game loop.
     while True:
@@ -165,6 +171,8 @@ def main():
 
         absolute_offset += offset_y
         screen.blit(env.get_background(), (0, 0))
+        screen.blit(myfont.render('Generation: {}'.format(len(population_list)), True, (0, 0, 0)),
+                    (width - 150, height - myfont.get_height()))
 
         if state == ELIMINATION:
             population_list[-1].eliminate()
@@ -173,6 +181,7 @@ def main():
             population_list[-1].mutate()
 
         if state == NEW_POPULATION:
+            env_change_flag = True
             max_y += row_height
             population_shift(screen, population_list, max_y - absolute_offset, row_height)
             absolute_offset = max_y
@@ -194,7 +203,8 @@ def main():
         else:
             population_shift(screen, population_list, offset_y, row_height)
 
-        if state == ENV_CHANGE:
+        if env_change_flag and len(population_list) % 10 == 0:
+            env_change_flag = False
             history_background_0.append((last_background_change, len(population_list), env.color_id))
             last_background_change = len(population_list)
             env.change_env()

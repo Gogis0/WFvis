@@ -11,14 +11,14 @@ DIM_GREY = (105, 105, 105)
 color_list = [SILVER, DIM_GREY]
 bg_list = [LIGHT_GREY, GREY]
 
-(width, height) = (1600, 900)
+(width, height) = (1200, 600)
 
 N_population = 20
 NEW_POPULATION = 1
 ELIMINATION = 2
 ENV_CHANGE = 3
 MUTATION = 4
-MUTATION_RATE = 0.1
+MUTATION_RATE = 0.4
 elimination_probs = [
     [0.3, 0.7],
     [0.8, 0.2]

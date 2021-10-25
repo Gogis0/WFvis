@@ -1,10 +1,12 @@
-import constants
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 from matplotlib.ticker import MaxNLocator
+
+import constants
 
 
 def plot_population_rates(N, history, backgrounds):
+    plt.clf()
     history = np.array(history)
     ax = plt.gca()
     ax.set_ylim([0, N])
@@ -20,4 +22,4 @@ def plot_population_rates(N, history, backgrounds):
     plt.legend(loc='best')
     plt.xlabel('Generation')
     plt.ylabel('Population size')
-    plt.show()
+    plt.savefig('generated_plots/graph.pdf', dpi=300)
